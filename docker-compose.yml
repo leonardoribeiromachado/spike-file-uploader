@@ -1,0 +1,20 @@
+version: "3.9"
+
+networks:
+  api-network:
+    driver: bridge
+
+services:
+
+  redis:
+    container_name: redis
+    image: redis
+    # Default user: default
+    command: redis-server --requirepass api
+    networks:
+      - api-network
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+    restart: unless-stopped
