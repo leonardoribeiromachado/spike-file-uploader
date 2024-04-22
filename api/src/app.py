@@ -24,7 +24,7 @@ def check_file():
     signature: str = json_request.get("signature")
     redis_value: str | None = redis.get(signature)
 
-    if redis_value == None:
+    if redis_value is None:
         metadata = {
             "size": json_request.get("size"),
             "chunks": json_request.get("chunks"),
@@ -45,7 +45,7 @@ def check_file():
                 return (
                     jsonify(
                         {
-                            "exists": True, 
+                            "exists": True,
                             "expected_signature": signature,
                             "signature": generated_signature,
                             "message": "File uploaded with error",
@@ -56,7 +56,7 @@ def check_file():
             return (
                 jsonify(
                     {
-                        "exists": True, 
+                        "exists": True,
                         "expected_signature": signature,
                         "signature": generated_signature,
                         "message": "File uploaded successfully",
@@ -73,9 +73,9 @@ def check_file():
 
 @app.route("/uploads/<signature>", methods=["PUT"])
 @cross_origin()
-def hello_world(signature):
+def upload(signature):
     redis_value: str | None = redis.get(signature)
-    if redis_value == None:
+    if redis_value is None:
         return jsonify({"message": "File doesn't have registered metadata"}), 400
 
     size = int(request.form.get("size"))
@@ -114,7 +114,7 @@ def hello_world(signature):
             return (
                 jsonify(
                     {
-                        "message": "File uploaded with successfully",
+                        "message": "File uploaded successfully",
                         "expected_signature": signature,
                         "signature": generated_signature,
                     }
